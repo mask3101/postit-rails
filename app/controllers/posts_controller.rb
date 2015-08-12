@@ -1,11 +1,14 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:edit, :update, :show]
+  before_action :require_user, except: [:index, :show]
 
   def index
     @posts = Post.all
   end
 
-  def show; end
+  def show
+    @comment = Comment.new
+  end
 
   def new
     @post = Post.new
@@ -13,7 +16,7 @@ class PostsController < ApplicationController
 
   def create
     @post = Post.new(post_params)
-    @post.user = User.first
+    @post.user = current_user
     if @post.save
       #binding.pry
       flash[:notice] = "Your Post was created"
@@ -37,7 +40,7 @@ class PostsController < ApplicationController
   private
 
     def post_params
-      params.require(:post).permit(:title, :url, :description)
+      params.require(:post).permit(:title, :url, :description, category_ids: [])
     end
 
     def set_post
