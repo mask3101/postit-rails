@@ -13,6 +13,17 @@ before_action :require_user
     end
   end
 
+  def vote
+    comment = Comment.find(params[:id])
+    vote = Vote.create(voteable: comment, user_id: current_user, vote: params[:vote])
+    if vote.valid?
+      flash[:notice] = "Your vote is counted"
+    else
+      flash[:error] = "You can only vote in a comment once"
+    end
+    redirect_to :back
+  end
+
   private
 
   def comment_params

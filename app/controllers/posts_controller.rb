@@ -1,13 +1,24 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:edit, :update, :show]
+  before_action :set_post, only: [:edit, :update, :show, :vote]
   before_action :require_user, except: [:index, :show]
 
   def index
-    @posts = Post.all
+    @posts = Post.all.sort_by{ |votes| votes.total_votes }.reverse
   end
 
   def show
     @comment = Comment.new
+  end
+
+  def vote
+    vote = Vote.create(voteable: @post, user_id: current_user, vote: params[:vote])
+    if vote.valid?  
+      flash[:notice] = "Your vote is counted"
+    else
+      flash[:error] = "You can only vote in a post once"
+    end
+    redirect_to :back
+
   end
 
   def new

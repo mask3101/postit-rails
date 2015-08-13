@@ -1,4 +1,17 @@
 <% show_post ||= false %>
+<div>
+<div class="span0 well text-center">
+    <%= link_to vote_post_comment_path(comment.post, comment, vote: true), method: 'post' do %>
+    <i class='icon-arrow-up'></i>
+    <% end -%>
+    <br/>
+    <%= comment.total_votes %> <%= comment.total_votes == 1 ? "vote" : "votes" %>
+    <br/>
+    <%= link_to vote_post_comment_path(comment.post, comment, vote: false), method: 'post' do %>
+    <i class='icon-arrow-down'></i>
+    <% end -%>
+  </div>
+
 <div class='well span8'>
   <em><%= comment.body %></em>
   <% if show_post %>
@@ -7,4 +20,5 @@
   <br/>
   <span class='quiet'>Posted by: </span><%= link_to comment.user.username, user_path(comment.user) %>
       <small>Post created at: <%= display_time(comment.created_at) %></small>
+</div>
 </div>
