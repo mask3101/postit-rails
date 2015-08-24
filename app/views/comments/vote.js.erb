@@ -1,0 +1,5 @@
+<% if @vote.valid? %>
+  $("#post_<%= @comment.post.slug %>_comment_<%= @comment.id %>_votes").html("<%= @comment.total_votes %><%= @comment.total_votes == 1 ? ' vote' : ' votes' %>")
+<% else %>
+  alert("Can't vote more than once for comment");
+<% end %>
